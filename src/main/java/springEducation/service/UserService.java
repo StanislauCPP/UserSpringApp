@@ -18,11 +18,15 @@ public class UserService {
 	@NonNull
 	UserCrudRepository userCrudRepository;
 
+	@NonNull
+	KafkaProducerService kafkaProducerService;
+
 	@Transactional
 	public UserDto createUser(UserDto userDto) {
 		User user = UserMapper.toEntity(userDto);
 
 		user = userCrudRepository.save(user);
+		kafkaProducerService.eventCreatedUser(userDto);
 
 		return UserMapper.toDto(user);
 	}
@@ -53,6 +57,7 @@ public class UserService {
 			return false;
 
 		userCrudRepository.deleteById(id);
+		kafkaProducerService.eventDeletedUser(UserMapper.toDto(optionalUser.get()));
 
 		return true;
 	}
