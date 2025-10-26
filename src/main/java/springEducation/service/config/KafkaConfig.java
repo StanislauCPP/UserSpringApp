@@ -14,8 +14,7 @@ public class KafkaConfig {
 	NewTopic createUserCreatedEventsTopic() {
 		return TopicBuilder.name("user-created-events-topic")
 			.partitions(3)
-			.replicas(3)
-			.configs(Map.of("min.insync.replicas", "2"))
+			.replicas(1)
 			.build();
 	}
 
@@ -23,8 +22,7 @@ public class KafkaConfig {
 	NewTopic createUserDeletedEventsTopic() {
 		return TopicBuilder.name("user-deleted-events-topic")
 				.partitions(3)
-				.replicas(3)
-				.configs(Map.of("min.insync.replicas", "2"))
+				.replicas(1)
 				.build();
 	}
 }
